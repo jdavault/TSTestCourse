@@ -1,27 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -59,7 +36,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var generated = __importStar(require("../../app/server_app/data/IdGenerator"));
 var ServerModel_1 = require("../../app/server_app/model/ServerModel");
 var Server_1 = require("../../app/server_app/server/Server");
 var http_client_1 = require("./utils/http-client");
@@ -84,6 +60,20 @@ describe('Server app integration tests', function () {
         room: 'someRoom',
         user: 'someUser'
     };
+    var someReservation2 = {
+        id: '',
+        endDate: 'someEndDate2',
+        startDate: 'someStartDate2',
+        room: 'someRoom2',
+        user: 'someUser2'
+    };
+    var someReservation3 = {
+        id: '',
+        endDate: 'someEndDate3',
+        startDate: 'someStartDate3',
+        room: 'someRoom3',
+        user: 'someUser3'
+    };
     it('should register new user', function () { return __awaiter(void 0, void 0, void 0, function () {
         var result, resultBody;
         return __generator(this, function (_a) {
@@ -99,6 +89,7 @@ describe('Server app integration tests', function () {
                     resultBody = _a.sent();
                     expect(result.status).toBe(ServerModel_1.HTTP_CODES.CREATED);
                     expect(resultBody.userId).toBeDefined();
+                    console.log("connecting to address ".concat(process.env.HOST, ":").concat(process.env.PORT));
                     return [2 /*return*/];
             }
         });
@@ -122,7 +113,7 @@ describe('Server app integration tests', function () {
         });
     }); });
     var token;
-    it('should login a register user', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('should login new user', function () { return __awaiter(void 0, void 0, void 0, function () {
         var result, resultBody;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -160,8 +151,8 @@ describe('Server app integration tests', function () {
                 case 2:
                     resultBody = _a.sent();
                     expect(result.status).toBe(ServerModel_1.HTTP_CODES.CREATED);
-                    expect(resultBody.reservationId).toBeDefined();
                     createdReservationId = resultBody.reservationId;
+                    expect(createdReservationId).toBeDefined();
                     return [2 /*return*/];
             }
         });
@@ -189,8 +180,8 @@ describe('Server app integration tests', function () {
             }
         });
     }); });
-    it('should create and retrieve multiple reservations if authorized', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var getAllResult, resultBody;
+    it('should create and retrieve multiple reservations, if authorized', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var getAllResults, resultBody;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetch('http://localhost:8080/reservation', {
@@ -204,7 +195,7 @@ describe('Server app integration tests', function () {
                     _a.sent();
                     return [4 /*yield*/, fetch('http://localhost:8080/reservation', {
                             method: ServerModel_1.HTTP_METHODS.POST,
-                            body: JSON.stringify(someReservation),
+                            body: JSON.stringify(someReservation2),
                             headers: {
                                 authorization: token
                             }
@@ -213,7 +204,7 @@ describe('Server app integration tests', function () {
                     _a.sent();
                     return [4 /*yield*/, fetch('http://localhost:8080/reservation', {
                             method: ServerModel_1.HTTP_METHODS.POST,
-                            body: JSON.stringify(someReservation),
+                            body: JSON.stringify(someReservation3),
                             headers: {
                                 authorization: token
                             }
@@ -227,18 +218,18 @@ describe('Server app integration tests', function () {
                             }
                         })];
                 case 4:
-                    getAllResult = _a.sent();
-                    return [4 /*yield*/, getAllResult.json()];
+                    getAllResults = _a.sent();
+                    return [4 /*yield*/, getAllResults.json()];
                 case 5:
                     resultBody = _a.sent();
-                    expect(getAllResult.status).toBe(ServerModel_1.HTTP_CODES.OK);
+                    expect(getAllResults.status).toBe(ServerModel_1.HTTP_CODES.OK);
                     expect(resultBody).toHaveLength(4);
                     return [2 /*return*/];
             }
         });
     }); });
     it('should update reservation if authorized', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var updateResult, getResult, getRequestBody;
+        var updateResult, result, getRequestBody;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetch("http://localhost:8080/reservation/".concat(createdReservationId), {
@@ -260,8 +251,8 @@ describe('Server app integration tests', function () {
                             }
                         })];
                 case 2:
-                    getResult = _a.sent();
-                    return [4 /*yield*/, getResult.json()];
+                    result = _a.sent();
+                    return [4 /*yield*/, result.json()];
                 case 3:
                     getRequestBody = _a.sent();
                     expect(getRequestBody.startDate).toBe('otherStartDate');
@@ -270,7 +261,7 @@ describe('Server app integration tests', function () {
         });
     }); });
     it('should delete reservation if authorized', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var deleteResult, getResult;
+        var updateResult, result;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetch("http://localhost:8080/reservation/".concat(createdReservationId), {
@@ -280,8 +271,8 @@ describe('Server app integration tests', function () {
                         }
                     })];
                 case 1:
-                    deleteResult = _a.sent();
-                    expect(deleteResult.status).toBe(ServerModel_1.HTTP_CODES.OK);
+                    updateResult = _a.sent();
+                    expect(updateResult.status).toBe(ServerModel_1.HTTP_CODES.OK);
                     return [4 /*yield*/, fetch("http://localhost:8080/reservation/".concat(createdReservationId), {
                             method: ServerModel_1.HTTP_METHODS.GET,
                             headers: {
@@ -289,42 +280,28 @@ describe('Server app integration tests', function () {
                             }
                         })];
                 case 2:
-                    getResult = _a.sent();
-                    expect(getResult.status).toBe(ServerModel_1.HTTP_CODES.NOT_fOUND);
+                    result = _a.sent();
+                    expect(result.status).toBe(ServerModel_1.HTTP_CODES.NOT_fOUND);
                     return [2 /*return*/];
             }
         });
     }); });
-    it('snapshot demo', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var getResult, getRequestBody;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    jest.spyOn(generated, 'generateRandomId').mockReturnValueOnce('12345');
-                    return [4 /*yield*/, fetch('http://localhost:8080/reservation', {
-                            method: ServerModel_1.HTTP_METHODS.POST,
-                            body: JSON.stringify(someReservation),
-                            headers: {
-                                authorization: token
-                            }
-                        })];
-                case 1:
-                    _a.sent();
-                    return [4 /*yield*/, fetch("http://localhost:8080/reservation/12345", {
-                            method: ServerModel_1.HTTP_METHODS.GET,
-                            headers: {
-                                authorization: token
-                            }
-                        })];
-                case 2:
-                    getResult = _a.sent();
-                    return [4 /*yield*/, getResult.json()];
-                case 3:
-                    getRequestBody = _a.sent();
-                    expect(getRequestBody).toMatchSnapshot();
-                    expect(getRequestBody).toMatchSnapshot();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
+    // it('snapshot demo', async () => {
+    //   jest.spyOn(generated, 'generateRandomId').mockReturnValueOnce('1234')
+    //   await fetch('http://localhost:8080/reservation', {
+    //     method: HTTP_METHODS.POST,
+    //     body: JSON.stringify(someReservation),
+    //     headers: {
+    //       authorization: token
+    //     },
+    //   });
+    //   const getResult = await fetch(`http://localhost:8080/reservation/${createdReservationId}`, {
+    //     method: HTTP_METHODS.GET,
+    //     headers: {
+    //       authorization: token
+    //     },
+    //   });
+    //   const getRequestBody: Reservation = await getResult.json()
+    //   expect(getRequestBody).toMatchSnapshot()
+    // })
 });

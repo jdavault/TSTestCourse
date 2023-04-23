@@ -303,7 +303,7 @@ describe('ReservationsHandler test suite', function () {
             });
         }); });
     });
-    describe('DELETE requests', function () {
+    describe('PUT requests', function () {
         beforeEach(function () {
             request.method = ServerModel_1.HTTP_METHODS.DELETE;
         });
