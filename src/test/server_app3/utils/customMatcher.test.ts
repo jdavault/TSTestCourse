@@ -8,7 +8,7 @@ expect.extend({
 
     return {
       pass: validId && validUser,
-      message: () => 'expected reservatin to have valid id and user'
+      message: () => 'expected reservation to have valid id and user'
     }
   },
   toHaveUser(reservation: Reservation, user: string) {
@@ -33,7 +33,7 @@ declare global {
 
 
 const someReservation: Reservation = {
-  id: '',
+  id: '123456',
   endDate: 'someDate',
   startDate: 'someStartDate',
   room: 'someRoom',
@@ -45,7 +45,7 @@ describe('custom matcher test', () => {
 
   it('check for valid reservation', () => {
     expect(someReservation).toBeValidReservation()
-    expect(someReservation).toHaveUser('someOtherUser')
+    expect(someReservation).toHaveUser('someUser')
   })
 
 })
