@@ -39,7 +39,7 @@ exports.__esModule = true;
 var RegisterHandler_1 = require("../../../app/server_app/handlers/RegisterHandler");
 var ServerModel_1 = require("../../../app/server_app/model/ServerModel");
 var getRequestBodyMock = jest.fn();
-jest.mock('../../../app/server_app/utils/Utils', function () { return ({
+jest.mock("../../../app/server_app/utils/Utils", function () { return ({
     getRequestBody: function () { return getRequestBodyMock(); }
 }); });
 describe('RegisterHandler test suite', function () {
@@ -78,7 +78,9 @@ describe('RegisterHandler test suite', function () {
                 case 1:
                     _a.sent();
                     expect(responseMock.statusCode).toBe(ServerModel_1.HTTP_CODES.CREATED);
-                    expect(responseMock.writeHead).toBeCalledWith(ServerModel_1.HTTP_CODES.CREATED, { 'Content-Type': 'application/json' });
+                    expect(responseMock.writeHead).toBeCalledWith(ServerModel_1.HTTP_CODES.CREATED, {
+                        'Content-Type': 'application/json'
+                    });
                     expect(responseMock.write).toBeCalledWith(JSON.stringify({
                         userId: someId
                     }));
@@ -86,6 +88,7 @@ describe('RegisterHandler test suite', function () {
             }
         });
     }); });
+    //-----
     it('should not register invalid accounts in requests', function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {

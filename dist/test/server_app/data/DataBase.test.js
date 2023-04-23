@@ -61,30 +61,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var DataBase_1 = require("../../../app/server_app/data/DataBase");
 var IdGenerator = __importStar(require("../../../app/server_app/data/IdGenerator"));
-describe('DataBase test suite', function () {
+describe("Database test suite", function () {
     var sut;
-    var fakeId = '1234';
-    var someObject1 = {
+    var fakeId = "e28b4179530d32fa34m3";
+    var user1 = {
         id: '',
-        name: 'someName',
-        color: 'blue'
+        name: "Joe Davault",
+        color: "green"
     };
-    var someObject2 = {
+    var user2 = {
         id: '',
-        name: 'someOtherName',
-        color: 'blue'
+        name: "John Davault",
+        color: "green"
     };
     beforeEach(function () {
         sut = new DataBase_1.DataBase();
         jest.spyOn(IdGenerator, 'generateRandomId').mockReturnValue(fakeId);
     });
-    it('should return id after inset', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it("Should return id after insert", function () { return __awaiter(void 0, void 0, void 0, function () {
         var actual;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, sut.insert({
-                        id: ''
-                    })];
+                case 0: return [4 /*yield*/, sut.insert(user1)];
                 case 1:
                     actual = _a.sent();
                     expect(actual).toBe(fakeId);
@@ -92,33 +90,33 @@ describe('DataBase test suite', function () {
             }
         });
     }); });
-    it('should get element after inset', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it("Should get element after insert", function () { return __awaiter(void 0, void 0, void 0, function () {
         var id, actual;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, sut.insert(someObject1)];
+                case 0: return [4 /*yield*/, sut.insert(user1)];
                 case 1:
                     id = _a.sent();
-                    return [4 /*yield*/, sut.getBy('id', id)];
+                    return [4 /*yield*/, sut.getBy("id", id)];
                 case 2:
                     actual = _a.sent();
-                    expect(actual).toBe(someObject1);
+                    expect(actual).toBe(user1);
                     return [2 /*return*/];
             }
         });
     }); });
-    it('should find all elements with the same property', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it("Should find all elements with the same prop/value", function () { return __awaiter(void 0, void 0, void 0, function () {
         var expected, actual;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, sut.insert(someObject1)];
+                case 0: return [4 /*yield*/, sut.insert(user1)];
                 case 1:
                     _a.sent();
-                    return [4 /*yield*/, sut.insert(someObject2)];
+                    return [4 /*yield*/, sut.insert(user2)];
                 case 2:
                     _a.sent();
-                    expected = [someObject1, someObject2];
-                    return [4 /*yield*/, sut.findAllBy('color', 'blue')];
+                    expected = [user1, user2];
+                    return [4 /*yield*/, sut.findAllBy("color", "green")];
                 case 3:
                     actual = _a.sent();
                     expect(actual).toEqual(expected);
@@ -126,18 +124,18 @@ describe('DataBase test suite', function () {
             }
         });
     }); });
-    it('should change color on object', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it("Should change color of an object", function () { return __awaiter(void 0, void 0, void 0, function () {
         var id, expectedColor, object, actualColor;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, sut.insert(someObject1)];
+                case 0: return [4 /*yield*/, sut.insert(user1)];
                 case 1:
                     id = _a.sent();
-                    expectedColor = 'red';
-                    return [4 /*yield*/, sut.update(id, 'color', expectedColor)];
+                    expectedColor = "red";
+                    return [4 /*yield*/, sut.update(id, "color", expectedColor)];
                 case 2:
                     _a.sent();
-                    return [4 /*yield*/, sut.getBy('id', id)];
+                    return [4 /*yield*/, sut.getBy("id", id)];
                 case 3:
                     object = _a.sent();
                     actualColor = object.color;
@@ -146,17 +144,17 @@ describe('DataBase test suite', function () {
             }
         });
     }); });
-    it('should delete object', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it("Should delete an object", function () { return __awaiter(void 0, void 0, void 0, function () {
         var id, actual;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, sut.insert(someObject1)];
+                case 0: return [4 /*yield*/, sut.insert(user1)];
                 case 1:
                     id = _a.sent();
                     return [4 /*yield*/, sut["delete"](id)];
                 case 2:
                     _a.sent();
-                    return [4 /*yield*/, sut.getBy('id', id)];
+                    return [4 /*yield*/, sut.getBy("id", id)];
                 case 3:
                     actual = _a.sent();
                     expect(actual).toBeUndefined();
@@ -164,17 +162,17 @@ describe('DataBase test suite', function () {
             }
         });
     }); });
-    it('should get all elements', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it("Should get all elements", function () { return __awaiter(void 0, void 0, void 0, function () {
         var expected, actual;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, sut.insert(someObject1)];
+                case 0: return [4 /*yield*/, sut.insert(user1)];
                 case 1:
                     _a.sent();
-                    return [4 /*yield*/, sut.insert(someObject2)];
+                    return [4 /*yield*/, sut.insert(user2)];
                 case 2:
                     _a.sent();
-                    expected = [someObject1, someObject2];
+                    expected = [user1, user2];
                     return [4 /*yield*/, sut.getAllElements()];
                 case 3:
                     actual = _a.sent();

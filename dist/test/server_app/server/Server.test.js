@@ -36,17 +36,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var Server_1 = require("../../../../src/app/server_app/server/Server");
 var Authorizer_1 = require("../../../app/server_app/auth/Authorizer");
 var ReservationsDataAccess_1 = require("../../../app/server_app/data/ReservationsDataAccess");
-var LoginHandler_1 = require("../../../app/server_app/handlers/LoginHandler");
 var RegisterHandler_1 = require("../../../app/server_app/handlers/RegisterHandler");
+var LoginHandler_1 = require("../../../app/server_app/handlers/LoginHandler");
 var ReservationsHandler_1 = require("../../../app/server_app/handlers/ReservationsHandler");
 var ServerModel_1 = require("../../../app/server_app/model/ServerModel");
-var Server_1 = require("../../../app/server_app/server/Server");
 jest.mock('../../../app/server_app/auth/Authorizer');
 jest.mock('../../../app/server_app/data/ReservationsDataAccess');
-jest.mock('../../../app/server_app/handlers/LoginHandler');
 jest.mock('../../../app/server_app/handlers/RegisterHandler');
+jest.mock('../../../app/server_app/handlers/LoginHandler');
 jest.mock('../../../app/server_app/handlers/ReservationsHandler');
 var requestMock = {
     url: '',
@@ -85,7 +85,7 @@ describe('Server test suite', function () {
                 case 1:
                     _a.sent();
                     expect(serverMock.listen).toBeCalledWith(8080);
-                    console.log('checking response.end calls:');
+                    console.log('checking response.end calls');
                     expect(responseMock.end).toBeCalled();
                     return [2 /*return*/];
             }
@@ -139,7 +139,7 @@ describe('Server test suite', function () {
             }
         });
     }); });
-    it('should do nothing for not supported routes', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('should do nothing for non-supported routes', function () { return __awaiter(void 0, void 0, void 0, function () {
         var validateTokenSpy;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -154,7 +154,7 @@ describe('Server test suite', function () {
             }
         });
     }); });
-    it('should handle errors in serving requests', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('should handle errors in servicing requests', function () { return __awaiter(void 0, void 0, void 0, function () {
         var handleRequestSpy;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -170,7 +170,7 @@ describe('Server test suite', function () {
             }
         });
     }); });
-    it('should stop the server if started', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('should stop the server if its running', function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, sut.startServer()];

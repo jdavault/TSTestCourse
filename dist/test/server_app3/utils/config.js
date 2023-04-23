@@ -1,2 +1,2 @@
-process.env.HOST = 'some.host';
+process.env.HOST = 'http://localhost';
 process.env.PORT = '1234';

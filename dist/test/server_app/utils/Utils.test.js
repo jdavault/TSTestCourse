@@ -41,8 +41,8 @@ var requestMock = {
     on: jest.fn()
 };
 var someObject = {
-    name: 'John',
-    age: 30,
+    name: 'Joe',
+    age: 53,
     city: 'Paris'
 };
 var someObjectAsString = JSON.stringify(someObject);
@@ -52,12 +52,12 @@ describe('getRequestBody test suite', function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    requestMock.on.mockImplementation(function (event, cb) {
-                        if (event == 'data') {
-                            cb(someObjectAsString);
+                    requestMock.on.mockImplementation(function (event, callback) {
+                        if (event === 'data') {
+                            callback(someObjectAsString);
                         }
                         else {
-                            cb();
+                            callback();
                         }
                     });
                     return [4 /*yield*/, (0, Utils_1.getRequestBody)(requestMock)];
@@ -68,35 +68,37 @@ describe('getRequestBody test suite', function () {
             }
         });
     }); });
-    it('should throw error for invalid JSON', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('should throw an error for invalid JSON', function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    requestMock.on.mockImplementation(function (event, cb) {
-                        if (event == 'data') {
-                            cb('a' + someObjectAsString);
+                    requestMock.on.mockImplementation(function (event, callback) {
+                        if (event === 'data') {
+                            callback("invalid" + someObjectAsString);
                         }
                         else {
-                            cb();
+                            callback();
                         }
                     });
+                    //const actual = await getRequestBody(requestMock as any as IncomingMessage)
                     return [4 /*yield*/, expect((0, Utils_1.getRequestBody)(requestMock)).rejects.
-                            toThrow('Unexpected token a in JSON at position 0')];
+                            toThrow('Unexpected token i in JSON at position 0')];
                 case 1:
+                    //const actual = await getRequestBody(requestMock as any as IncomingMessage)
                     _a.sent();
                     return [2 /*return*/];
             }
         });
     }); });
-    it('should throw error for unexpected error', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('should throw an error for unexpected error', function () { return __awaiter(void 0, void 0, void 0, function () {
         var someError;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     someError = new Error('Something went wrong!');
-                    requestMock.on.mockImplementation(function (event, cb) {
-                        if (event == 'error') {
-                            cb(someError);
+                    requestMock.on.mockImplementation(function (event, callback) {
+                        if (event === 'error') {
+                            callback(someError);
                         }
                     });
                     return [4 /*yield*/, expect((0, Utils_1.getRequestBody)(requestMock)).rejects.
