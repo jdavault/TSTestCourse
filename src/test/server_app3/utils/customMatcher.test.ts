@@ -33,7 +33,7 @@ declare global {
 
 
 const someReservation: Reservation = {
-  id: '123456',
+  id: '12345',
   endDate: 'someDate',
   startDate: 'someStartDate',
   room: 'someRoom',
