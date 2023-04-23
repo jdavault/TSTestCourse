@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Server app integration tests snapshot demo 1`] = `"Reservation with id 1d33801b95d1308ee64d not found"`;
